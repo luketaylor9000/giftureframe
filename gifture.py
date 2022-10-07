@@ -12,13 +12,8 @@ from dotenv import load_dotenv
 def configure():
     load_dotenv()
 
-# set the apikey and limit
-# apikey = os.getenv('api_key')  # click to set to your apikey
-# lmt = 10    # set number of gifs to return
-# ckey = "my_test_app"  # set the client_key for the integration and use the same value for all API calls
-
-# search_term = "excited"  # set a search term
 def get_gifs():
+    # set the apikey and limit
     apikey = os.getenv('api_key')  # click to set to your apikey
     lmt = 10    # set number of gifs to return
     ckey = "my_test_app"  # set the client_key for the integration and use the same value for all API calls
