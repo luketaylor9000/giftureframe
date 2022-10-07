@@ -19,6 +19,7 @@ def get_gifs():
     ckey = "my_test_app"  # set the client_key for the integration and use the same value for all API calls
 
     search_term = "excited"
+    
     r = requests.get(
         "https://tenor.googleapis.com/v2/search?q=%s&key=%s&client_key=%s&limit=%s" % (search_term, apikey, ckey,  lmt))
 
