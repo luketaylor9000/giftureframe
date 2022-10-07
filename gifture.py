@@ -7,36 +7,44 @@ import os
 import urllib.request
 import pyglet
 import pyglet.window.key
+from dotenv import load_dotenv
 
+def configure():
+    load_dotenv()
 
 # set the apikey and limit
-apikey = ""  # click to set to your apikey
-lmt = 10    # set number of gifs to return
-ckey = ""  # set the client_key for the integration and use the same value for all API calls
+# apikey = os.getenv('api_key')  # click to set to your apikey
+# lmt = 10    # set number of gifs to return
+# ckey = "my_test_app"  # set the client_key for the integration and use the same value for all API calls
 
-search_term = "excited"  # set a search term
+# search_term = "excited"  # set a search term
+def get_gifs():
+    apikey = os.getenv('api_key')  # click to set to your apikey
+    lmt = 10    # set number of gifs to return
+    ckey = "my_test_app"  # set the client_key for the integration and use the same value for all API calls
 
-r = requests.get(
-    "https://tenor.googleapis.com/v2/search?q=%s&key=%s&client_key=%s&limit=%s" % (search_term, apikey, ckey,  lmt))
+    search_term = "excited"
+    r = requests.get(
+        "https://tenor.googleapis.com/v2/search?q=%s&key=%s&client_key=%s&limit=%s" % (search_term, apikey, ckey,  lmt))
 
-gif_list = []
+    # gif_list = []
 
-def dl_gif(url, file_path, file_name):
-    full_path = file_path + file_name + '.gif'
-    urllib.request.urlretrieve(url, full_path)
+    def dl_gif(url, file_path, file_name):
+        full_path = file_path + file_name + '.gif'
+        urllib.request.urlretrieve(url, full_path)
 
-if r.status_code == 200:
-    gif_json_data = json.loads(r.content)
-    for each in gif_json_data['results']:
-        gif = (each['media_formats']['gif']['url'])
-        gif_description = (each['content_description'])
-        url = gif
-        index = gif_json_data['results'].index(each)
-        file_name = (f'gif{index}')
+    if r.status_code == 200:
+        gif_json_data = json.loads(r.content)
+        for each in gif_json_data['results']:
+            gif = (each['media_formats']['gif']['url'])
+            # gif_description = (each['content_description'])
+            url = gif
+            index = gif_json_data['results'].index(each)
+            file_name = (f'gif{index}')
 
-        dl_gif(url, 'images/', file_name)   
-else:
-    gif_json_data = None
+            dl_gif(url, 'images/', file_name)   
+    else:
+        gif_json_data = None
 
 
 def update_image(dt):
@@ -66,13 +74,14 @@ def on_draw():
     sprite.draw()
 
 if __name__ == '__main__':
+    configure()
     parser = argparse.ArgumentParser()
     parser.add_argument('dir', help='directory of images', nargs='?', default=os.getcwd())
     args = parser.parse_args()
-
+    if len(get_image_paths(args.dir)) == 0:
+        get_gifs()
     image_paths = get_image_paths(args.dir)
     ani = pyglet.resource.animation(random.choice(image_paths))
-
     sprite = pyglet.sprite.Sprite(ani)
     H_ratio = max(sprite.height, 720) / min(sprite.height, 720)
     W_ratio = max(sprite.width, 720) / min(sprite.width, 720)
