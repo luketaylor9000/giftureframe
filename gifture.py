@@ -46,8 +46,8 @@ def get_gifs():
 def update_image(dt):
     ani = pyglet.resource.animation(random.choice(image_paths))
     sprite.image = ani
-    sprite.scale_x = max(sprite.height, 720) / min(sprite.height, 720)
-    sprite.scale_y = max(sprite.width, 720) / min(sprite.width, 720)
+    # sprite.scale_x = max(sprite.height, 720) / min(sprite.height, 720)
+    # sprite.scale_y = max(sprite.width, 720) / min(sprite.width, 720)
     window.clear()
 
 
@@ -82,7 +82,6 @@ if __name__ == '__main__':
     H_ratio = max(sprite.height, 720) / min(sprite.height, 720)
     W_ratio = max(sprite.width, 720) / min(sprite.width, 720)
     sprite.scale = min(H_ratio, W_ratio)
-
     pyglet.clock.schedule_interval(update_image, 6.0)
 
     pyglet.app.run()
