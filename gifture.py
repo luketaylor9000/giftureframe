@@ -42,14 +42,14 @@ def get_gifs():
     else:
         gif_json_data = None
 
+def select_gif():
+  image_paths = get_image_paths(args.dir)
+  random_choice = random.choice(image_paths)
+  return random_choice
 
 def update_image(dt):
-    ani = pyglet.resource.animation(random.choice(image_paths))
+    ani = pyglet.resource.animation(select_gif())
     sprite.image = ani
-    # sprite.scale_x = max(sprite.height, 720) / min(sprite.height, 720)
-    # sprite.scale_y = max(sprite.width, 720) / min(sprite.width, 720)
-    window.clear()
-
 
 def get_image_paths(input_dir='.'):
     paths = []
@@ -76,12 +76,13 @@ if __name__ == '__main__':
     args = parser.parse_args()
     if len(get_image_paths(args.dir)) == 0:
         get_gifs()
-    image_paths = get_image_paths(args.dir)
-    ani = pyglet.resource.animation(random.choice(image_paths))
+    ani = pyglet.resource.animation(select_gif())
     sprite = pyglet.sprite.Sprite(ani)
     H_ratio = max(sprite.height, 720) / min(sprite.height, 720)
     W_ratio = max(sprite.width, 720) / min(sprite.width, 720)
-    sprite.scale = min(H_ratio, W_ratio)
+    sprite.scale_x = W_ratio
+    sprite.scale_y = H_ratio
+
     pyglet.clock.schedule_interval(update_image, 6.0)
 
     pyglet.app.run()
